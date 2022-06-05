@@ -16,8 +16,10 @@ export class UsuarioController {
     }
 
     @Post()
-    public newUser(@Body() user:Usuario): Usuario{        
-
+    public newUser(@Body() user:Usuario): Usuario{   
+        
+        throw new Error("Method not implemented teste");
+         
         const usuarioCriado = this.usuarioService.newUser(user)
         return usuarioCriado
         

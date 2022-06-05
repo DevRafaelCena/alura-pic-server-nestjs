@@ -1,15 +1,21 @@
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { FitroDeExcecaoHttp } from './common/filtros/filtro-de-excecao-http.filter';
 import { UsuarioModule } from './usuario/usuario.module';
 
 
 @Module({
   imports: [UsuarioModule],
   controllers: [],
-  providers: [{
-    provide: APP_INTERCEPTOR,
-    useClass: ClassSerializerInterceptor,
-
-  }],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: FitroDeExcecaoHttp
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor
+    }
+  ],
 })
 export class AppModule {}
