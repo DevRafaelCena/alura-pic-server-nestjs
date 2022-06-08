@@ -1,4 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Param, Post, Res } from "@nestjs/common";
+import { NestResponse } from "../core/http/nest-response";
+import { NestResponseBuilder } from "../core/http/nest-response-builder";
 import { Usuario } from "./usuario.entity";
 import { UsuarioService } from "./usuario.service";
 
@@ -16,14 +18,16 @@ export class UsuarioController {
     }
 
     @Post()
-    public newUser(@Body() user:Usuario, @Res() res){   
+    public newUser(@Body() user:Usuario): NestResponse{   
         
-        //throw new Error("Method not implemented teste");
-         
-        const usuarioCriado = this.usuarioService.newUser(user)
-        res.status(HttpStatus.CREATED)
-            .location(`/users/${usuarioCriado.nomeDeUsuario}`)
-            .send(usuarioCriado)
+               
+        const usuarioCriado = this.usuarioService.newUser(user)    
+
+        return new NestResponseBuilder()
+            .comStatus(HttpStatus.CREATED)
+            .comHeaders({'Location': `/users/${usuarioCriado.nomeDeUsuario}`})
+            .comBody(usuarioCriado)
+            .build()
        
         
         
