@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Param, Post, Res } from "@nestjs/common";
 import { Usuario } from "./usuario.entity";
 import { UsuarioService } from "./usuario.service";
 
@@ -16,12 +16,16 @@ export class UsuarioController {
     }
 
     @Post()
-    public newUser(@Body() user:Usuario): Usuario{   
+    public newUser(@Body() user:Usuario, @Res() res){   
         
-        throw new Error("Method not implemented teste");
+        //throw new Error("Method not implemented teste");
          
         const usuarioCriado = this.usuarioService.newUser(user)
-        return usuarioCriado
+        res.status(HttpStatus.CREATED)
+            .location(`/users/${usuarioCriado.nomeDeUsuario}`)
+            .send(usuarioCriado)
+       
+        
         
     }
 }
